@@ -1,0 +1,8 @@
+version: "3.9"
+
+services:
+  tls-auditor:
+    build: .
+    image: tls-auditor:latest
+    container_name: tls-auditor
+
