@@ -35,7 +35,7 @@ make up && make demo
 ---
 
 ## Project Structure
-
+```
 tls-auditor/
     - src/ # Core auditor logic
     - tests/ # Unit and integration tests
@@ -44,6 +44,7 @@ tls-auditor/
     - docker-compose.yml # Container definitions
     - README.md # This file
     - LICENSE # MIT License
+```
 
 ---
 
