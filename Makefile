@@ -11,11 +11,13 @@ down:
 	docker-compose down
 
 demo:
-	docker run --rm tls-auditor python src/auditor.py google.com
+	docker run --rm \
+		-v "$(PWD)/artifacts/release:/app/artifacts/release" \
+		tls-auditor python src/auditor.py google.com
 
 clean:
 	docker-compose down --rmi all --volumes --remove-orphans
 
 clean-artifacts:
-	rm -f artifacts/release/*.json artifacts//release/*.csv
+	rm -f artifacts/release/*.json artifacts/release/*.csv
 	@echo "Artifacts cleared."
