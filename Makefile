@@ -1,4 +1,4 @@
-.PHONY: bootstrap up down demo clean
+.PHONY: bootstrap up down demo clean clean-artifacts
 
 bootstrap:
 	docker pull python:3.12-slim
@@ -11,7 +11,11 @@ down:
 	docker-compose down
 
 demo:
-	@echo "Demo target not yet implemented."
+	docker run --rm tls-auditor python src/auditor.py google.com
 
 clean:
 	docker-compose down --rmi all --volumes --remove-orphans
+
+clean-artifacts:
+	rm -f artifacts/release/*.json artifacts//release/*.csv
+	@echo "Artifacts cleared."
