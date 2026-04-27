@@ -40,6 +40,8 @@ tls-auditor/
     - src/ # Core auditor logic
     - tests/ # Unit and integration tests
     - artifacts/ # Evidence, logs, reports
+    - nginx-weak/ # Deliberately misconfigured test server
+    - nginx-hardened/ # Properly secured test server
     - Makefile # Command shortcuts
     - docker-compose.yml # Container definitions
     - README.md # This file
@@ -50,4 +52,4 @@ tls-auditor/
 
 ## Status
 
-> Proposal phase - skeleton only. System under active development.
+> Alpha-Beta phase - core scanner operational. Test servers running. Unit tests and CI pipeline in progress.

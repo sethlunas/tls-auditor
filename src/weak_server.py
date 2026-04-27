@@ -22,7 +22,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(("0.0.0.0", 8443))
     sock.listen(5)
-    print("Weak test server listening on port 8443 (3DES cipher)...")
+    print("Weak test server listening on port 8443 (AES128-SHA cipher)...")
     while True:
         conn, addr = sock.accept()
         try:
