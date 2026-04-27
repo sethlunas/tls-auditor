@@ -1,8 +1,37 @@
-version: "3.9"
+version: "3.9" 
 
 services:
-  tls-auditor:
-    build: .
-    image: tls-auditor:latest
-    container_name: tls-auditor
 
+  # main scanner container - runs the TLS auditor Python tool
+  tls-auditor:
+    build: . # build image from Dockerfile in current directory
+    image: tls-auditor:latest # name and tag the built image
+    container_name: tls-auditor # name the running container
+    depends_on:
+      - nginx-weak # wait for weak server to start first
+      - nginx-hardened # wait for hardened server to start first
+    extra_hosts:
+      - "host.docker.internal:host-gateway" # makes host.docker.internal work on Linux too
+
+
+  # deliberately weak test server - Python-based, forces TLS 1.1 max
+  nginx-weak:
+    build:
+      context: .
+      dockerfile: nginx-weak/Dockerfile
+    container_name: nginx-weak
+    ports:
+      - "8443:8443"
+
+  # properly secured test server - only accepts TLS 1.2/1.3 and strong ciphers
+  nginx-hardened:
+    image: nginx:alpine # use official lightweight nginx image 
+    container_name: nginx-hardened # name the running container
+    volumes:
+      # mount our hardened nginx config into container
+      - ./nginx-hardened/conf/nginx.conf:/etc/nginx/conf.d/default.conf
+      # mount our self-signed certs into container 
+      - ./nginx-hardened/certs:/etc/nginx/certs
+    ports:
+      # map local port 9443 to container port 443
+      - "9443:443"

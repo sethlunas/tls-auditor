@@ -23,7 +23,7 @@ Modern standards: TLS 1.2 and TLS 1.3
 
 
 WEAK_CIPHERS = {
-    "RC4", "DES", "3DES", "MD5", "NULL", "EXPORT", "anon", "ADH", "AECDH"
+    "RC4", "DES", "3DES", "MD5", "NULL", "EXPORT", "anon", "ADH", "AECDH", "AES128-SHA"
 }
 """
 Cipher suite keywords associated with weak or broken encryption.
@@ -65,9 +65,15 @@ def scan_host(hostname: str, port: int = 443) -> dict:
         - timestamp: when this scan was performed
     """
 
-    context = ssl.create_default_context() # SSL context object; rulebook for how the TLS connection should behave
-    context.check_hostname = True # verifies the certificate's hostname matches the server we're connecting to
-    context.verify_mode = ssl.CERT_REQUIRED # requires a valid cert from server; prevents no-cert servers connection
+    # SSL context object; rulebook for how the TLS connection should behave
+    context = ssl.create_default_context() 
+
+    # disable port cert verification for self-signed test servers
+    # in production this should always be True
+    if port != 443:
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
+        context.set_ciphers("ALL:@SECLEVEL=0")
 
     with socket.create_connection((hostname, port), timeout=10) as sock: # opens raw TCP connection to target
         with context.wrap_socket(sock, server_hostname=hostname) as tls_sock: # takes raw TCP connection and wraps it in TLS; handshake
@@ -192,12 +198,13 @@ def main():
         sys.exit(1)
     
     hostname = sys.argv[1]
+    port = int(sys.argv[2]) if len(sys.argv) > 2 else 443
 
     print(f"\n--- TLS Auditor ---")
     print(f"Scanning: {hostname}\n")
 
     try:
-        scan = scan_host(hostname)
+        scan = scan_host(hostname, port)
         evaluation = evaluate_results(scan)
         save_report(scan, evaluation)
 

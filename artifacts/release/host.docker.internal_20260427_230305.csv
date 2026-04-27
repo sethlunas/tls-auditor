@@ -1,0 +1,2 @@
+hostname,port,protocol,cipher,cert_subject,cert_issuer,cert_expiry,timestamp,protocol_weak,cipher_weak,cert_expired,issues,passed
+host.docker.internal,9443,TLSv1.3,TLS_AES_256_GCM_SHA384,UNKNOWN,UNKNOWN,UNKNOWN,2026-04-27T23:03:05.736167+00:00,False,False,False,[],True
