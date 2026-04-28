@@ -15,7 +15,7 @@ context.load_cert_chain(
 context.maximum_version = ssl.TLSVersion.TLSv1_2
 context.minimum_version = ssl.TLSVersion.TLSv1_2
 
-# force a weak cipher; 3DES has no forward secrecy and is considered broken
+# force a weak cipher; AES128-SHA has no forward secrecy and is considered weak by modern standards
 context.set_ciphers("AES128-SHA")
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
