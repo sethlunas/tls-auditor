@@ -1,2 +1,5 @@
 artifacts/release/*.json
 artifacts/release/*.csv
+__pycache__/
+.pytest_cache/
+*.pyc
