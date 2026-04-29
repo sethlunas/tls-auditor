@@ -1,0 +1,37 @@
+{
+  "total": 2,
+  "passed": 1,
+  "failed": 1,
+  "results": [
+    {
+      "hostname": "host.docker.internal",
+      "port": "8443",
+      "protocol": "TLSv1.2",
+      "cipher": "AES128-SHA",
+      "cert_subject": "UNKNOWN",
+      "cert_issuer": "UNKNOWN",
+      "cert_expiry": "UNKNOWN",
+      "timestamp": "2026-04-29T02:12:15.644353+00:00",
+      "protocol_weak": "False",
+      "cipher_weak": "True",
+      "cert_expired": "False",
+      "issues": "['Weak cipher detected: AES128-SHA']",
+      "passed": "False"
+    },
+    {
+      "hostname": "host.docker.internal",
+      "port": "9443",
+      "protocol": "TLSv1.3",
+      "cipher": "TLS_AES_256_GCM_SHA384",
+      "cert_subject": "UNKNOWN",
+      "cert_issuer": "UNKNOWN",
+      "cert_expiry": "UNKNOWN",
+      "timestamp": "2026-04-29T02:12:16.019680+00:00",
+      "protocol_weak": "False",
+      "cipher_weak": "False",
+      "cert_expired": "False",
+      "issues": "[]",
+      "passed": "True"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
-artifacts/release/*.json
-artifacts/release/*.csv
+artifacts/release/host.*.json
+artifacts/release/host.*.csv
 __pycache__/
 .pytest_cache/
 *.pyc

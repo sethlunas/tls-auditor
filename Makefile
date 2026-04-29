@@ -1,5 +1,5 @@
 # declares all targets as phony - tells Make these are commands, not filenames
-.PHONY: bootstrap up down demo clean clean-artifacts test
+.PHONY: bootstrap up down demo clean clean-artifacts test summarize
 
 # pulls the base Python image to cache it locally - run once before anything else
 bootstrap:
@@ -37,3 +37,7 @@ clean-artifacts:
 # runs all unit tests with verbose output
 test:
 	pytest tests/test_auditor.py -v 
+
+# generates a summary table from all scan reports in artifacts/release/
+summarize:
+	python3 src/summarize.py
