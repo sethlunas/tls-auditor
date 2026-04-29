@@ -20,10 +20,7 @@ jobs:
           python-version: "3.12" # match Dockerfile Python version
       
       - name: Install dependencies
-        run: pip install -r requirements.txt # installs pytest and everything else
+        run: pip install -r requirements.txt pytest-cov # installs pytest and everything else
 
       - name: Run tests with coverage
         run: pytest tests/test_auditor.py -v --tb=short --cov=src --cov-report=term-missing
-      
-      - name: Install dependencies
-      - run: pip install -r requirements.txt pytest-cov
