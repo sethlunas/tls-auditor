@@ -4,6 +4,14 @@ import json # for writing scan results to a JSON file
 import csv # for writing scan reults to a CSV file
 import datetime # for timestamping reports
 from pathlib import Path # clean/modern way to handle file paths in Python, works on any OS
+import logging
+
+# configure logging to show timestamps and log level
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(message)s"
+)
+logger = logging.getLogger(__name__)
 
 ARTIFACTS_DIR = Path("artifacts/release") # defines where all output files go
 ARTIFACTS_DIR.mkdir(parents=True, exist_ok=True) # creates directory automatically when script runs if it doesnt already exist
@@ -66,6 +74,7 @@ def scan_host(hostname: str, port: int = 443) -> dict:
     """
 
     # SSL context object; rulebook for how the TLS connection should behave
+    logger.info(f"Starting TLS scan on {hostname}:{port}")
     context = ssl.create_default_context() 
 
     # disable port cert verification for self-signed test servers
@@ -80,6 +89,7 @@ def scan_host(hostname: str, port: int = 443) -> dict:
             protocol = tls_sock.version() # returns protocol version of what the connection agreed on
             cipher_info = tls_sock.cipher() # returns tuple of three; cipher suite name, protocol version, key length in bits
             cipher_name = cipher_info[0] if cipher_info else "UNKNOWN" 
+            logger.info(f"Handshake complete - protocol: {protocol}, cipher: {cipher_name}")
             cert = tls_sock.getpeercert() # pulls the server's cert details as a Python dictionary
 
     subject, issuer = {}, {}
@@ -122,6 +132,7 @@ def evaluate_results(scan: dict) -> dict:
         - passed: True if no issues were found
     """
     issues = []
+    logger.info(f"Evaluating results for {scan['hostname']}")
 
     protocol_weak = scan["protocol"] in WEAK_PROTOCOLS
     if protocol_weak:
@@ -140,6 +151,7 @@ def evaluate_results(scan: dict) -> dict:
             cert_expired = True
             issues.append(f"Certificate expired on: {scan['cert_expiry']}")
 
+    logger.info(f"Evaluation complete - passed: {len(issues) == 0}, issues: {len(issues)}")
     return {
         "protocol_weak": protocol_weak,
         "cipher_weak": cipher_weak,
@@ -197,8 +209,19 @@ def main():
         print("Usage: python src/auditor.py <hostname>")
         sys.exit(1)
     
-    hostname = sys.argv[1]
+    hostname = sys.argv[1].strip()
     port = int(sys.argv[2]) if len(sys.argv) > 2 else 443
+
+    # input validation
+    if not hostname:
+        print("Error: hostname cannot be empty.")
+        sys.exit(1)
+
+    if not (1 <= port <= 65535):
+        print(f"Error: port {port} is out of valid range (1-65535).")
+        sys.exit(1)
+
+    logger.info(f"Input validated - hostname: {hostname}, port: {port}")
 
     print(f"\n--- TLS Auditor ---")
     print(f"Scanning: {hostname}\n")
