@@ -1,0 +1,26 @@
+name: CI # name shown in GitHub Actions tab
+
+on:
+  push:
+    branches: [main] # run on every push to main
+  pull_request:
+    branches: [main] # run on every pull request to main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest # run on a fresh Ubuntu machine
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4 # pulls repo into the runner
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12" # match Dockerfile Python version
+      
+      - name: Install dependencies
+        run: pip install -r requirements.txt # installs pytest and everything else
+
+      - name: Run tests
+        run: pytest test/test_auditor.py -v # runs all 7 tests
