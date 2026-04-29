@@ -31,7 +31,7 @@ clean:
 
 # removes all generated JSON and CSV report files from artifacts/release/
 clean-artifacts:
-	rm -f artifacts/release/*.json artifacts/release/*.csv
+	rm -f artifacts/release/host.*.json artifacts/release/host.*.csv
 	@echo "Artifacts cleared."
 
 # runs all unit tests with verbose output
