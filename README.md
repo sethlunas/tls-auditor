@@ -63,4 +63,4 @@ tls-auditor/
 
 ## Status
 
-> Alpha-Beta phase; core scanner operational. Test servers running. Unit tests and CI pipeline in progress.
+> Alpha-Beta complete. Core scanner operational, test servers running, 7 unit tests passing, CI pipeline green. Final report and v1.0.0 release in progress.
